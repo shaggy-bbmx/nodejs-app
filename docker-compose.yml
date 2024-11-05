@@ -21,6 +21,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}  # Pass the DB_PASSWORD from the .env file to the container
     depends_on:
       - mysql
+    restart: "on-failure"
+    command: >
+      bash -c "curl -sS https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -o /wait-for-it.sh && chmod +x /wait-for-it.sh && /wait-for-it.sh mysql-container:3306 -- node app.js"
     networks:
       - hotel_manager_net
 
