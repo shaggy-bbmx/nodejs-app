@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}  # Password passed from the .env file
+      MYSQL_DATABASE: hoteldatabase
+    ports:
+      - "3306:3306"
+    networks:
+      - hotel_manager_net
+
+  nodejs:
+    image: sagarpatel94/nodejs-app 
+    container_name: nodejs-app
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}  # Pass the DB_PASSWORD from the .env file to the container
+    depends_on:
+      - mysql
+    networks:
+      - hotel_manager_net
+
+networks:
+  hotel_manager_net:
+    driver: bridge
